@@ -1,41 +1,34 @@
 class Solution {
-public:
+private:
+    int partition(vector<int>&nums, int l, int h){
+        int pivot = nums[l + rand() % (h-l)];
 
-    void merge(vector<int>& nums, int low, int mid, int high) {
-        vector<int> temp;
-        int left = low;
-        int right = mid + 1;
-        while (left <= mid && right <= high) {
-            if (nums[left] <= nums[right]) {
-                temp.push_back(nums[left]);
-                left++;
-            } else {
-                temp.push_back(nums[right]);
-                right++;
-            }
+        int i = l;
+        int j = h;
+        
+        while(1){
+            while(nums[i] < pivot) ++i;
+            while(nums[j] > pivot) --j;
+            if(i >= j)
+                break;
+
+            swap(nums[i], nums[j]);
+            ++i; --j;
         }
-        while (left <= mid) {
-            temp.push_back(nums[left]);
-            left++;
-        }
-        while (right <= high) {
-            temp.push_back(nums[right]);
-            right++;
-        }
-        for (int i = low; i <= high; i++) {
-            nums[i] = temp[i - low];
-        }
+        return j;
     }
-    void mergeSort(vector<int>& nums, int low, int high) {
-        if (low >= high)
+
+    void sort(vector<int>&nums, int l, int h){ // [l, h]
+        if(l >= h)
             return;
-        int mid = low + (high - low) / 2;
-        mergeSort(nums, low, mid);
-        mergeSort(nums, mid + 1, high);
-        merge(nums, low, mid, high);
+
+        int i = partition(nums, l, h);
+        sort(nums, l, i);
+        sort(nums, i+1, h);
     }
+public:
     vector<int> sortArray(vector<int>& nums) {
-        mergeSort(nums, 0, nums.size() - 1);
+        sort(nums, 0, nums.size()-1);
         return nums;
     }
 };
