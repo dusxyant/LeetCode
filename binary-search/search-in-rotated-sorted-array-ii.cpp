@@ -11,7 +11,7 @@ public:
                 return true;
 
             
-            if (nums[low] <= nums[mid]) {
+            if (nums[low] <= nums[mid] && nums[mid-1]<nums[mid]) {
 
                 if (nums[low] <= target && target < nums[mid])
                     high = mid - 1;
