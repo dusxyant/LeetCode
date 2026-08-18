@@ -1,20 +1,24 @@
 class Solution {
-    unordered_set<int> seen;
-
 public:
     bool isHappy(int n) {
-        if (n == 1) return true;
-        if (seen.count(n)) return false;
+        int slow = n, fast = sumOfSquares(n);
 
-        seen.insert(n);
-
-        int sum = 0;
-        while (n > 0) {
-            int digit = n % 10;
-            sum += digit * digit;
-            n /= 10;
+        while (slow != fast) {
+            fast = sumOfSquares(fast);
+            fast = sumOfSquares(fast);
+            slow = sumOfSquares(slow);
         }
 
-        return isHappy(sum);
+        return fast == 1;
+    }
+
+private:
+    int sumOfSquares(int n) {
+        int output = 0;
+        while (n != 0) {
+            output += (n % 10) * (n % 10);
+            n /= 10;
+        }
+        return output;
     }
 };
